@@ -21,7 +21,7 @@ const db = await mysql.createConnection({
 
 console.log("Conectado a MySQL ✔");
 
-const JWT_SECRET = "superclave123"; // puedes cambiarla
+const JWT_SECRET = "superclave123";
 
 // -----------------------------
 //   LOGIN
@@ -99,5 +99,14 @@ app.delete("/users/:id", auth, async (req, res) => {
     res.json({ message: "Usuario eliminado" });
 });
 
-// -----------------------------
+// =============================================
+//     RUTA PRINCIPAL PARA QUE RENDER MUESTRE ALGO
+// =============================================
+app.get("/", (req, res) => {
+    res.send("API funcionando ✔");
+});
+
+// =============================================
+//        INICIAR SERVIDOR
+// =============================================
 app.listen(3000, () => console.log("API lista en puerto 3000"));
