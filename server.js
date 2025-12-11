@@ -23,6 +23,38 @@ console.log("Conectado a MySQL ✔");
 
 const JWT_SECRET = "superclave123";
 
+// =============================================
+//     CREAR AUTOMÁTICAMENTE USUARIO ADMIN
+// =============================================
+async function createAdminUser() {
+    const adminEmail = "admin@gmail.com";
+    const adminPass = "1234";
+
+    // ver si ya existe
+    const [rows] = await db.execute(
+        "SELECT * FROM users WHERE email = ?",
+        [adminEmail]
+    );
+
+    if (rows.length > 0) {
+        console.log("El admin ya existe ✔");
+        return;
+    }
+
+    // si no existe → crearlo
+    const hashed = await bcrypt.hash(adminPass, 10);
+
+    await db.execute(
+        "INSERT INTO users (email, password, full_name, role) VALUES (?, ?, ?, ?)",
+        [adminEmail, hashed, "Administrador", "admin"]
+    );
+
+    console.log("Usuario admin creado automáticamente ✔");
+}
+
+// Ejecutar función
+createAdminUser();
+
 // -----------------------------
 //   LOGIN
 // -----------------------------
